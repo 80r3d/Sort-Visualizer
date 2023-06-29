@@ -112,15 +112,15 @@ int main(int argc, char* argv[])
     SDL_CreateWindowAndRenderer(
         100 * 10, 100 * 10, 0,
         &window, &renderer);
-    
+
     SDL_RenderSetScale(renderer,10,10);
     
 
     //bubble sort
-    //bubbleSort(v, renderer);
+    bubbleSort(v, renderer);
 
     //quick sort
-    quick_sort(v, 0, v.size() - 1, renderer);
+    //quick_sort(v, 0, v.size() - 1, renderer);
 
 
 
