@@ -9,6 +9,64 @@
 #include<ranges>
 #include <algorithm>
 
+void draw_state(std::vector<int>& v,
+    SDL_Renderer* renderer,
+    unsigned int red,
+    unsigned int blue);
+
+
+void quick_sort(std::vector<int>& v, unsigned int left, unsigned int right,SDL_Renderer* renderer) {
+	unsigned int i = left, j = right;
+	int tmp;
+	int pivot = v[(left + right) / 2];
+
+	/* partition */
+    while (i <= j) {
+		while (v[i] < pivot)
+			i++;
+		while (v[j] > pivot)
+			j--;
+        if (i <= j) {
+			std::swap(v[i], v[j]);
+			i++;
+			j--;
+		}
+	};
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    draw_state(v, renderer, i, j);
+
+    SDL_RenderPresent(renderer);
+    SDL_Delay(50);
+
+	/* recursion */
+	if (left < j)
+		quick_sort(v, left, j, renderer);
+	if (i < right)
+		quick_sort(v, i, right, renderer);
+}
+
+void bubbleSort(std::vector<int>& v, SDL_Renderer* renderer) {
+	for(unsigned int i = 0; i < v.size(); i++)
+    {
+        for (unsigned int j = i; j < v.size(); j++)
+        {
+            if (v[j] < v[i])
+            {
+                std::swap(v[j], v[i]);
+            }
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderClear(renderer);
+            draw_state(v, renderer, i, j);
+
+            SDL_RenderPresent(renderer);
+            SDL_Delay(5);
+        }
+    
+}
+}
+
+
 
 
 void draw_state(std::vector<int>& v,
@@ -54,26 +112,15 @@ int main(int argc, char* argv[])
     SDL_CreateWindowAndRenderer(
         100 * 10, 100 * 10, 0,
         &window, &renderer);
+    
     SDL_RenderSetScale(renderer,10,10);
     
 
     //bubble sort
-    for (unsigned int i = 0; i < v.size(); i++)
-    {
-        for (unsigned int j = i; j < v.size(); j++)
-        {
-            if (v[j] < v[i])
-            {
-				std::swap(v[j], v[i]);
-			}
-            SDL_SetRenderDrawColor(renderer,0,0,0,255);
-            SDL_RenderClear(renderer);
-            draw_state(v, renderer, i, j);
+    //bubbleSort(v, renderer);
 
-            SDL_RenderPresent(renderer);
-            SDL_Delay(5);
-		}
-    }
+    //quick sort
+    quick_sort(v, 0, v.size() - 1, renderer);
 
 
 
